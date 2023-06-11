@@ -2,6 +2,7 @@ package CourseWork2.service.impl;
 
 import org.example.exception.QuestionAtreadyExistsException;
 import org.example.exception.QuestionNotFoundException;
+import org.example.exception.QuestionsAreEmptyException;
 import org.example.model.Question;
 import org.example.service.QuestionService;
 import org.example.service.impl.JavaQuestionService;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static jdk.dynalink.linker.support.Guards.isNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -88,5 +90,19 @@ public class JavaQuestionServiceTest {
                         new Question("V2", "O2"),
                         new Question("V3", "O3")
                 );
+    }
+
+    @Test
+    public void getRandomQuestTest() {
+        assertThat(questionService.getRandomQuestion())
+                .isIn(questionService.getAll());
+    }
+
+    @Test
+    public void getRandomQuestNegTest() {
+        afterEach();
+        assertThatExceptionOfType(QuestionsAreEmptyException.class)
+                .isThrownBy(()->questionService.getRandomQuestion());
+
     }
 }
